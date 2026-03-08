@@ -29,20 +29,12 @@ export default function EnquiryForm() {
         body: JSON.stringify(formData),
       });
 
-      const responseText = await res.text();
-      let responseData;
-      try {
-        responseData = JSON.parse(responseText);
-      } catch (parseError) {
-        console.error("Failed to parse JSON response:", responseText);
-        throw new Error("Invalid JSON response from server");
-      }
-
       if (res.ok) {
         setStatus('success');
         setFormData({ name: '', email: '', phone: '', date: '', eventType: 'Wedding', message: '' });
       } else {
-        console.error("API error:", responseData);
+        const errorData = await res.json().catch(() => ({}));
+        console.error("Submission failed:", errorData);
         setStatus('error');
       }
     } catch (error) {
@@ -57,14 +49,14 @@ export default function EnquiryForm() {
         <h2 className="section-title">Enquire & Book</h2>
         <div className="form-container">
           {status === 'success' ? (
-            <motion.div 
-              initial={{ opacity: 0 }} 
-              animate={{ opacity: 1 }} 
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               className="success-message"
               style={{ textAlign: 'center', padding: '2rem 0', color: 'var(--primary-color)' }}
             >
               <h3>Thank You!</h3>
-              <p>Your enquiry has been received perfectly. (Note: Email notifications configure via .env)</p>
+              <p>Your enquiry has been received perfectly.</p>
               <button className="btn btn-secondary" onClick={() => setStatus('')} style={{ marginTop: '1rem' }}>
                 Send Another Enquiry
               </button>

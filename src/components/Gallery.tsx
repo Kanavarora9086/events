@@ -20,7 +20,7 @@ const galleryItems = [
     size: 'normal'
   },
   {
-    url: 'https://images.unsplash.com/photo-1478146896981-b80fe463b330?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+    url: '/led-counter.png',
     title: 'Premium Counter Setups',
     size: 'normal'
   },

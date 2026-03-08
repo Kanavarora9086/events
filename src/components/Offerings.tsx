@@ -17,7 +17,7 @@ const offerings = [
   {
     title: 'Premium Counter Setup',
     description: 'Elegant beverage, mocktail, and hors d\'oeuvres stations, designed to seamlessly blend into your theme while providing impeccable service.',
-    imgUrl: 'https://images.unsplash.com/photo-1478146896981-b80fe463b330?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+    imgUrl: '/led-counter.png'
   },
   {
     title: 'Entertainment & Music',

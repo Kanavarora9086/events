@@ -11,6 +11,34 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
+    // --- Supabase Integration ---
+    try {
+      const { supabase } = await import('@/lib/supabase');
+      const { error: dbError } = await supabase
+        .from('enquiries')
+        .insert([
+          { 
+            name, 
+            email, 
+            phone, 
+            date, 
+            event_type: eventType, 
+            message 
+          }
+        ]);
+
+      if (dbError) {
+        console.error('Supabase Error:', dbError);
+        // We continue anyway so the user gets a response, but we log the error
+      } else {
+        console.log('Successfully saved enquiry to Supabase');
+      }
+    } catch (suppError) {
+      console.error('Failed to connect to Supabase:', suppError);
+    }
+    // ----------------------------
+
+
     // Check if credentials are set to something valid
     const isDefaultEmail = process.env.EMAIL_USER === 'your-email-address@gmail.com';
     if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS || isDefaultEmail) {
