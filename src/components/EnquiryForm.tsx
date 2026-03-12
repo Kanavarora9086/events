@@ -13,6 +13,7 @@ export default function EnquiryForm() {
     message: ''
   });
   const [status, setStatus] = useState<'' | 'submitting' | 'success' | 'error'>('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -21,6 +22,7 @@ export default function EnquiryForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('submitting');
+    setErrorMessage('');
     
     try {
       const res = await fetch('/api/enquiry', {
@@ -35,19 +37,33 @@ export default function EnquiryForm() {
       } else {
         const errorData = await res.json().catch(() => ({}));
         console.error("Submission failed:", errorData);
+        setErrorMessage(errorData.details || errorData.error || 'Something went wrong. Please check if the database table exists.');
         setStatus('error');
       }
     } catch (error) {
       console.error("Submit error:", error);
+      setErrorMessage('Network error. Please try again later.');
       setStatus('error');
     }
   };
 
   return (
-    <section className="section bg-light" id="book" style={{ padding: '4rem 0', background: '#f8fafc' }}>
+    <section className="section" id="book" style={{ padding: '8rem 0', background: '#f8fafc' }}>
       <div className="container">
-        <h2 className="section-title">Enquire & Book</h2>
-        <div className="form-container">
+        <motion.h2 
+          className="section-title"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          Enquire & Book
+        </motion.h2>
+        <motion.div 
+          className="form-container"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
           {status === 'success' ? (
             <motion.div
               initial={{ opacity: 0 }}
@@ -102,7 +118,7 @@ export default function EnquiryForm() {
               </div>
 
               {status === 'error' && (
-                <p style={{ color: 'red', textAlign: 'center' }}>Something went wrong. Please try again later.</p>
+                <p style={{ color: 'red', textAlign: 'center', marginBottom: '1rem' }}>{errorMessage}</p>
               )}
 
               <div className="form-submit-wrapper">
@@ -112,7 +128,7 @@ export default function EnquiryForm() {
               </div>
             </form>
           )}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

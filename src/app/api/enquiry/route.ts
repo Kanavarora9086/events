@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
+import { supabase } from '@/lib/supabase';
 
 export async function POST(request: Request) {
   try {
@@ -13,7 +14,7 @@ export async function POST(request: Request) {
 
     // --- Supabase Integration ---
     try {
-      const { supabase } = await import('@/lib/supabase');
+      console.log('Using Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL ? 'Set' : 'Missing');
       const { error: dbError } = await supabase
         .from('enquiries')
         .insert([
@@ -28,13 +29,26 @@ export async function POST(request: Request) {
         ]);
 
       if (dbError) {
-        console.error('Supabase Error:', dbError);
-        // We continue anyway so the user gets a response, but we log the error
-      } else {
-        console.log('Successfully saved enquiry to Supabase');
+        console.error('Supabase Enquiry Error:', {
+          message: dbError.message,
+          details: dbError.details,
+          hint: dbError.hint,
+          code: dbError.code
+        });
+        return NextResponse.json({ 
+          error: 'Failed to save booking to database', 
+          details: dbError.message,
+          code: dbError.code 
+        }, { status: 500 });
       }
+      
+      console.log('Successfully saved enquiry to Supabase');
     } catch (suppError) {
-      console.error('Failed to connect to Supabase:', suppError);
+      console.error('Unexpected Supabase error:', suppError);
+      return NextResponse.json({ 
+        error: 'Database connection error', 
+        details: suppError instanceof Error ? suppError.message : 'Unknown error' 
+      }, { status: 500 });
     }
     // ----------------------------
 
@@ -42,26 +56,25 @@ export async function POST(request: Request) {
     // Check if credentials are set to something valid
     const isDefaultEmail = process.env.EMAIL_USER === 'your-email-address@gmail.com';
     if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS || isDefaultEmail) {
-      console.warn('⚠️ WARNING: EMAIL_USER or EMAIL_PASS not set in .env! Simulating successful form submission.');
-      // Return success gracefully so the frontend UI doesn't break
+      console.warn('⚠️ WARNING: EMAIL_USER or EMAIL_PASS not set in .env! Simulating successful email notification.');
       return NextResponse.json({ 
         success: true, 
-        message: 'Form submitted successfully! (Email notifications are currently disabled until .env is configured)' 
+        message: 'Booking saved successfully! (Email notifications are currently disabled)' 
       });
     }
 
     // Configure Nodemailer 
     const transporter = nodemailer.createTransport({
-      service: 'gmail', // You can change the service to whatever you use (e.g., outlook, custom SMTP)
+      service: 'gmail',
       auth: {
         user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS, // Use App Password for Gmail!
+        pass: process.env.EMAIL_PASS,
       },
     });
 
     const mailOptions = {
-        from: `"${name}" <${process.env.EMAIL_USER}>`, // Since using App password, send from authenticated user
-        to: process.env.EMAIL_USER, // Sending the notification to the site owner
+        from: `"${name}" <${process.env.EMAIL_USER}>`,
+        to: process.env.EMAIL_USER,
         replyTo: email,
         subject: `New Chacha Events Enquiry from ${name} [${eventType}]`,
         text: `
@@ -92,9 +105,9 @@ ${message}
 
     await transporter.sendMail(mailOptions);
 
-    return NextResponse.json({ success: true, message: 'Email sent successfully!' });
+    return NextResponse.json({ success: true, message: 'Booking saved and email sent successfully!' });
   } catch (error) {
-    console.error('Error sending email:', error);
-    return NextResponse.json({ error: 'Failed to send email' }, { status: 500 });
+    console.error('General Error:', error);
+    return NextResponse.json({ error: 'An unexpected error occurred' }, { status: 500 });
   }
 }

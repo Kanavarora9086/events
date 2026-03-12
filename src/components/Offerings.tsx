@@ -1,3 +1,7 @@
+"use client";
+
+import { motion } from 'framer-motion';
+
 const offerings = [
   {
     title: 'Exquisite Catering',
@@ -35,10 +39,24 @@ export default function Offerings() {
   return (
     <section className="section bg-light" id="offerings">
       <div className="container">
-        <h2 className="section-title">Our Distinctive Offerings</h2>
+        <motion.h2 
+          className="section-title"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          Our Distinctive Offerings
+        </motion.h2>
         <div className="offerings-grid">
           {offerings.map((item, index) => (
-            <div key={index} className="offering-card">
+            <motion.div 
+              key={index} 
+              className="offering-card"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+              viewport={{ once: true }}
+            >
               <div className="offering-img-wrapper">
                 <img src={item.imgUrl} alt={item.title} className="offering-img" />
               </div>
@@ -46,7 +64,7 @@ export default function Offerings() {
                 <h3>{item.title}</h3>
                 <p>{item.description}</p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

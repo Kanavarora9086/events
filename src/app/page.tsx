@@ -2,25 +2,22 @@ import HeroCarousel from '@/components/HeroCarousel';
 import Offerings from '@/components/Offerings';
 import Gallery from '@/components/Gallery';
 import EnquiryForm from '@/components/EnquiryForm';
+import Reviews from '@/components/Reviews';
+import FloatingActionButton from '@/components/FloatingActionButton';
+import Navbar from '@/components/Navbar';
 
 export default function Home() {
   return (
     <main>
-      <nav className="navbar scrolled">
-        <div className="container nav-container">
-          <div className="logo">CHACHA EVENTS</div>
-          <div className="nav-links">
-            <a href="#offerings" className="nav-link">Offerings</a>
-            <a href="#gallery" className="nav-link">Gallery</a>
-            <a href="#book" className="nav-link">Book</a>
-          </div>
-        </div>
-      </nav>
+      <Navbar />
 
       <HeroCarousel />
       <Offerings />
       <Gallery />
+      <Reviews />
       <EnquiryForm />
+      
+      <FloatingActionButton />
       
       <footer className="footer">
         <div className="container">

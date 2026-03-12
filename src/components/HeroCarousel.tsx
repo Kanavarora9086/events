@@ -1,7 +1,5 @@
 "use client";
 
-"use client";
-
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -74,6 +72,11 @@ export default function HeroCarousel() {
             </motion.a>
           </motion.div>
         </AnimatePresence>
+      </div>
+
+      <div className="scroll-indicator">
+        <span>Scroll</span>
+        <div className="mouse-icon"></div>
       </div>
 
       <div className="carousel-controls">
