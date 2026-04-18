@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+<<<<<<< HEAD
 
 const supabaseConfigured =
   !!process.env.NEXT_PUBLIC_SUPABASE_URL &&
@@ -12,6 +13,12 @@ export async function GET() {
 
   try {
     const { supabase } = await import('@/lib/supabase');
+=======
+import { supabase } from '@/lib/supabase';
+
+export async function GET() {
+  try {
+>>>>>>> c346d3ac954641113eb1b92dc543398da433ba43
     const { data, error } = await supabase
       .from('reviews')
       .select('*')
@@ -39,6 +46,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
+<<<<<<< HEAD
     if (!supabaseConfigured) {
       console.warn('⚠️ Supabase not configured — review not saved to DB.');
       return NextResponse.json({
@@ -60,6 +68,32 @@ export async function POST(request: Request) {
       );
     }
 
+=======
+    console.log('Attempting to save review to Supabase...', { name, rating, category });
+
+    const { error: dbError } = await supabase
+      .from('reviews')
+      .insert([
+        { 
+          name, 
+          rating, 
+          comment, 
+          category,
+          is_approved: false // Explicitly set to false for moderation
+        }
+      ]);
+
+    if (dbError) {
+      console.error('Supabase Review Error:', dbError);
+      return NextResponse.json({ 
+        error: 'Failed to save review to database', 
+        details: dbError.message,
+        code: dbError.code
+      }, { status: 500 });
+    }
+
+    console.log('Successfully saved review to Supabase');
+>>>>>>> c346d3ac954641113eb1b92dc543398da433ba43
     return NextResponse.json({ success: true, message: 'Review saved successfully and pending approval!' });
   } catch (error) {
     console.error('General Review Error:', error);
