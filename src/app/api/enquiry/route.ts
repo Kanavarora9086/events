@@ -1,10 +1,6 @@
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
-<<<<<<< HEAD
 
-=======
-import { supabase } from '@/lib/supabase';
->>>>>>> c346d3ac954641113eb1b92dc543398da433ba43
 
 export async function POST(request: Request) {
   try {
@@ -16,8 +12,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    // --- Supabase Integration ---
-<<<<<<< HEAD
     const supabaseConfigured =
       !!process.env.NEXT_PUBLIC_SUPABASE_URL &&
       !!process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -51,44 +45,6 @@ export async function POST(request: Request) {
       }
     } else {
       console.warn('⚠️ Supabase not configured — enquiry not saved to DB.');
-=======
-    try {
-      console.log('Using Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL ? 'Set' : 'Missing');
-      const { error: dbError } = await supabase
-        .from('enquiries')
-        .insert([
-          { 
-            name, 
-            email, 
-            phone, 
-            date, 
-            event_type: eventType, 
-            message 
-          }
-        ]);
-
-      if (dbError) {
-        console.error('Supabase Enquiry Error:', {
-          message: dbError.message,
-          details: dbError.details,
-          hint: dbError.hint,
-          code: dbError.code
-        });
-        return NextResponse.json({ 
-          error: 'Failed to save booking to database', 
-          details: dbError.message,
-          code: dbError.code 
-        }, { status: 500 });
-      }
-      
-      console.log('Successfully saved enquiry to Supabase');
-    } catch (suppError) {
-      console.error('Unexpected Supabase error:', suppError);
-      return NextResponse.json({ 
-        error: 'Database connection error', 
-        details: suppError instanceof Error ? suppError.message : 'Unknown error' 
-      }, { status: 500 });
->>>>>>> c346d3ac954641113eb1b92dc543398da433ba43
     }
     // ----------------------------
 

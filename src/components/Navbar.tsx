@@ -17,11 +17,7 @@ export default function Navbar() {
 
   return (
     <>
-<<<<<<< HEAD
       <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
-=======
-      <nav className={`navbar ${isScrolled ? 'scrolled' : 'scrolled'}`}>
->>>>>>> c346d3ac954641113eb1b92dc543398da433ba43
         <div className="container nav-container">
           <div className="logo">CHACHA EVENTS</div>
           <div className="nav-links">

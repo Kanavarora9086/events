@@ -1,13 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-<<<<<<< HEAD
 import { Quote, Star, Sparkle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-=======
-import { Quote, Star } from 'lucide-react';
-import { motion } from 'framer-motion';
->>>>>>> c346d3ac954641113eb1b92dc543398da433ba43
 
 interface Review {
   name: string;
@@ -15,10 +10,7 @@ interface Review {
   rating: number;
   category: string;
   role?: string;
-<<<<<<< HEAD
   created_at?: string;
-=======
->>>>>>> c346d3ac954641113eb1b92dc543398da433ba43
 }
 
 const fallbackReviews: Review[] = [
@@ -55,10 +47,7 @@ export default function Reviews() {
         const res = await fetch('/api/reviews');
         if (res.ok) {
           const data = await res.json();
-<<<<<<< HEAD
-=======
           // If we have approved reviews in DB, use them; otherwise use fallbacks
->>>>>>> c346d3ac954641113eb1b92dc543398da433ba43
           setReviews(data.length > 0 ? data : fallbackReviews);
         } else {
           setReviews(fallbackReviews);
@@ -74,7 +63,6 @@ export default function Reviews() {
   }, []);
 
   return (
-<<<<<<< HEAD
     <section className="section" id="reviews" style={{ backgroundColor: '#ffffff', overflow: 'hidden' }}>
       <div className="container">
         <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
@@ -177,49 +165,6 @@ export default function Reviews() {
                 </motion.div>
               ))}
             </AnimatePresence>
-=======
-    <section className="section" id="reviews" style={{ backgroundColor: '#fcfaf0' }}>
-      <div className="container">
-        <h2 className="section-title">What Our Clients Say</h2>
-        
-        {loading ? (
-          <div style={{ textAlign: 'center', padding: '3rem' }}>
-            <p style={{ opacity: 0.6 }}>Loading testimonials...</p>
-          </div>
-        ) : (
-          <div className="reviews-grid">
-            {reviews.map((review, index) => (
-              <motion.div 
-                key={index} 
-                className="review-card glass"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.2 }}
-                viewport={{ once: true }}
-              >
-                <div className="review-quote-icon">
-                  <Quote size={24} fill="var(--primary-color)" color="var(--primary-color)" opacity={0.3} />
-                </div>
-                
-                <div className="review-rating">
-                  {[...Array(review.rating)].map((_, i) => (
-                    <Star key={i} size={16} fill="var(--primary-color)" color="var(--primary-color)" />
-                  ))}
-                </div>
-                
-                <p className="review-comment text-italic">"{review.comment}"</p>
-                
-                <div className="review-footer">
-                  <div className="review-info">
-                    <h4 className="review-name">{review.name}</h4>
-                    <span className="review-role">
-                      {review.role ? `${review.role} • ` : ''}{review.category}
-                    </span>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
->>>>>>> c346d3ac954641113eb1b92dc543398da433ba43
           </div>
         )}
       </div>

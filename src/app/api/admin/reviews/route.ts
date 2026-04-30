@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-<<<<<<< HEAD
 
 const supabaseConfigured =
   !!process.env.NEXT_PUBLIC_SUPABASE_URL &&
@@ -13,13 +12,6 @@ export async function GET() {
 
   try {
     const { supabase } = await import('@/lib/supabase');
-=======
-import { supabase } from '@/lib/supabase';
-
-// GET all reviews for the admin panel (unfiltered)
-export async function GET() {
-  try {
->>>>>>> c346d3ac954641113eb1b92dc543398da433ba43
     const { data, error } = await supabase
       .from('reviews')
       .select('*')
@@ -37,13 +29,10 @@ export async function GET() {
 
 // PATCH to update approval status
 export async function PATCH(request: Request) {
-<<<<<<< HEAD
   if (!supabaseConfigured) {
     return NextResponse.json({ error: 'Database not configured' }, { status: 503 });
   }
 
-=======
->>>>>>> c346d3ac954641113eb1b92dc543398da433ba43
   try {
     const { id, is_approved } = await request.json();
 
@@ -51,10 +40,7 @@ export async function PATCH(request: Request) {
       return NextResponse.json({ error: 'Review ID is required' }, { status: 400 });
     }
 
-<<<<<<< HEAD
     const { supabase } = await import('@/lib/supabase');
-=======
->>>>>>> c346d3ac954641113eb1b92dc543398da433ba43
     const { error } = await supabase
       .from('reviews')
       .update({ is_approved })
@@ -72,13 +58,10 @@ export async function PATCH(request: Request) {
 
 // DELETE a review
 export async function DELETE(request: Request) {
-<<<<<<< HEAD
   if (!supabaseConfigured) {
     return NextResponse.json({ error: 'Database not configured' }, { status: 503 });
   }
 
-=======
->>>>>>> c346d3ac954641113eb1b92dc543398da433ba43
   try {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
@@ -87,10 +70,7 @@ export async function DELETE(request: Request) {
       return NextResponse.json({ error: 'Review ID is required' }, { status: 400 });
     }
 
-<<<<<<< HEAD
     const { supabase } = await import('@/lib/supabase');
-=======
->>>>>>> c346d3ac954641113eb1b92dc543398da433ba43
     const { error } = await supabase
       .from('reviews')
       .delete()
