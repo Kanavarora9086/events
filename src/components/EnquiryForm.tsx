@@ -66,9 +66,8 @@ export default function EnquiryForm() {
       }
     }
   };
-};
-};
-return (
+
+  return (
   <section className="section" id="book" style={{ padding: '10rem 0', background: 'var(--bg-cream)' }}>
     <div className="container">
       <motion.div
